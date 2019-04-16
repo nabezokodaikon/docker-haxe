@@ -13,7 +13,15 @@ RUN apt-get update -y
 RUN apt-get install -y --no-install-recommends \
     haxe
 
-WORKDIR /home/user/workspace
+RUN git config --global http.sslVerify false
+RUN git clone --depth 1 https://github.com/nabezokodaikon/dotfiles.git /home/builder/dotfiles
+
+ENV HOME /home/builder
+RUN /home/builder/dotfiles/script/install.sh
+
+RUN chmod -R 755 /home/builder
+
+WORKDIR /home/builder/workspace
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod 744 /usr/local/bin/entrypoint.sh
