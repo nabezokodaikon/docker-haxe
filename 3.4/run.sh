@@ -1,8 +1,8 @@
 #/bin/bash
 
-docker rm haxe3.4
-docker run --name "haxe3.4" \
-           -it -v ${HOME}/workspace/develop/:/home/builder/workspace \
+docker run --name haxe3.4 \
+           --hostname haxe \
+           -it -v ${HOME}/workspace/develop:/home/user/workspace \
            -e LOCAL_UID=$(id -u $USER) \
            -e LOCAL_GID=$(id -g $USER) \
            nabezokodaikon/haxe3.4 zsh
