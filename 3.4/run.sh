@@ -5,4 +5,5 @@ docker run --name haxe3.4 \
            -it -v ${HOME}/workspace/develop:/home/user/workspace \
            -e LOCAL_UID=$(id -u $USER) \
            -e LOCAL_GID=$(id -g $USER) \
-           nabezokodaikon/haxe3.4 zsh
+           -e TZ=JST-9 \
+           --rm nabezokodaikon/haxe3.4 zsh
