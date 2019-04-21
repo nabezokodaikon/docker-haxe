@@ -1,4 +1,5 @@
 FROM ubuntu:18.04
+FROM ubuntu:18.04
 MAINTAINER nabezokodaikon
 
 RUN apt-get update -y
@@ -13,15 +14,18 @@ RUN apt-get update -y
 RUN apt-get install -y --no-install-recommends \
     haxe
 
-RUN git config --global http.sslVerify false
-RUN git clone --depth 1 https://github.com/nabezokodaikon/dotfiles.git /home/user/dotfiles
+RUN useradd -m developer
+USER developer
 
-ENV HOME /home/user
-RUN /home/user/dotfiles/script/install.sh
+COPY --chown=developer entrypoint.sh /home/developer/entrypoint.sh
+RUN chmod 744 /home/developer/entrypoint.sh
 
-WORKDIR /home/user
+RUN mkdir /home/developer/repository && \
+    chown -R developer:developer /home/developer/repository
+WORKDIR /home/developer/repository
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod 744 /usr/local/bin/entrypoint.sh
+RUN git clone --depth 1 https://github.com/nabezokodaikon/dotfiles.git /home/developer/dotfiles && \
+    /home/developer/dotfiles/script/install.sh
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+USER root
+ENTRYPOINT ["/home/developer/entrypoint.sh"]

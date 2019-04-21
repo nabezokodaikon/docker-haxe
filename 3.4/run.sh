@@ -1,9 +1,10 @@
 #/bin/bash
 
+REPOSITORY=${HOME}/workspace/develop/learning-haxe
+
 docker run --name haxe3.4 \
            --hostname haxe \
-           -it -v ${HOME}/workspace/develop:/home/user/workspace/develop \
-           -e LOCAL_UID=$(id -u $USER) \
-           -e LOCAL_GID=$(id -g $USER) \
            -e TZ=JST-9 \
-           --rm nabezokodaikon/haxe3.4 zsh
+           -v $REPOSITORY:/home/developer/repository \
+           -it \
+           --rm nabezokodaikon/haxe3.4 /usr/bin/zsh
